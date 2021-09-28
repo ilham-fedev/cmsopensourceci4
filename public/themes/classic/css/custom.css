@@ -1,0 +1,174 @@
+.header .navbar-brand img{
+    width:200px;
+}
+
+.bg-hero{
+    background-color: #1d903b;
+}
+
+.bg-sidebar{
+    background-color: #384c5f;
+}
+
+.search{
+    border-radius: 20px;
+}
+
+.sidebar .w-80{
+    width: 90%;
+}
+
+.sidebar h3{
+    color: #fff;
+}
+
+.sidebar a{
+    padding-top: 0px;
+    padding-bottom: 10px;
+    margin-top: 0px;
+    display: block;
+    font-size: 16px;
+    color: #e1f0ff;
+}
+
+.sidebar a:hover{
+    letter-spacing: 0px;
+    text-decoration:underline ;
+}
+
+.sidebar span{
+    color: #fff;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.sidebar hr{
+    color: #e1f0ff;
+    background-color: #e1f0ff;
+}
+
+.sidebar hr:nth-last-child(1)
+{
+    color: #384c5f;
+    background-color: #384c5f;
+}
+
+.sidebar a.tags{
+    display: inline-flex;
+    border: solid 1px #e1f0ff;
+    padding-bottom: 0px;
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+
+.news-items img
+{
+    width: 100%;
+    border-radius: 20px;
+}
+
+.news-items .small_tile{
+    font-size: 10px;
+    font-style: italic;
+}
+
+.agenda .section-title{
+    padding:10px;
+}
+
+.pricing-table .bg-sidebar{
+    background-color: #384c5f;
+}
+
+.pricing-table .agenda-margin{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.agenda .section-title h3{
+    border: none;
+}
+
+.agenda-slide{
+    width: 100%;
+    height: 444px;
+    overflow: hidden;
+}
+
+.tns-nav{
+    font-size: 24px;
+}
+
+.app-image{
+    max-height: 657px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.app-image img{
+    border-radius: 20px;
+}
+
+.social-media-frame{
+    width: 160px;
+    height: 160px;
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left:20%;
+}
+
+.social-media-frame img{
+    height: 100%;
+    width:100%;
+    border-radius: 15px;
+}
+
+.social-media-frame .high-up{
+    position: relative;
+    height: 160px;
+    width: 160px;
+    border-radius: 0px 0px 15px 15px;
+    background-color: rgba(0, 0, 0,0.5);
+    top:-70px;
+    left: 0px;
+    transition:all 0.2s ease-in-out;
+}
+
+.social-media-frame .high-up i{
+    font-size: 65px;
+    color: rgba(255, 255, 255,0.9);
+    margin-left: 27%;
+    margin-top: 20%;
+}
+
+.social-media-frame:hover .high-up{
+    top: -160px;
+    transition:all 0.2s ease-in-out;
+    border-radius: 15px 15px 15px 15px;
+}
+
+.breadcrumbs .breadcrumbs-content .page-title{
+    color: #3080e3;
+}
+
+.breadcrumbs .breadcrumb-nav li{
+    color: #3080e3;
+}
+
+.breadcrumbs .breadcrumb-nav li,
+.breadcrumbs .breadcrumb-nav li a {
+    color: #3080e3;
+}
+.hero-area {
+    position: relative;
+    background-color: #fff;
+    padding: 98px 0 50px 0;
+}
+.services{
+    padding-top: 10px;
+}
+.photo-image img{
+    width: 100%;
+}
