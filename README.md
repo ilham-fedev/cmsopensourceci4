@@ -15,5 +15,10 @@ Sama halnya dengan Codeigniter 4, cara installnya sama dengan menginstall Codeig
 ## Lainnya
 - Jika ada request bisa langsung di sampaikan guna pengembangan ke depan
 
+## Login
+- http://localhost:8080/cms-login
+username : @cmsopensurce
+password : cmsopensurce
+
 ## Saweria
 Jika teman-teman mau menyumbangkan sedikit kopi / jajan bisa di [Saweria](https://saweria.co/hendriarga28)
