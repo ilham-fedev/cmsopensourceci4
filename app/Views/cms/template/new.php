@@ -247,12 +247,12 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Uploading...';
         
+        // Add CSRF token
+        formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
+        
         fetch('<?= base_url("panel/template") ?>', {
             method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
+            body: formData
         })
         .then(response => response.json())
         .then(data => {

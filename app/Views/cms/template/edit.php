@@ -82,9 +82,10 @@
                                     <?php if ($theme->thumbnail): ?>
                                         <div class="mb-2">
                                             <img src="<?= base_url("themes/{$theme->folder}/{$theme->thumbnail}") ?>" 
-                                                 class="img-thumbnail" style="max-width: 200px; max-height: 150px;" 
-                                                 alt="Current thumbnail">
-                                            <small class="d-block text-muted">Current thumbnail</small>
+                                                 class="img-thumbnail" style="max-width: 200px; max-height: 150px; cursor: pointer;" 
+                                                 alt="Current thumbnail"
+                                                 onclick="showThemePreview('<?= base_url("themes/{$theme->folder}/{$theme->thumbnail}") ?>', '<?= esc($theme->judul) ?>')">
+                                            <small class="d-block text-muted">Current thumbnail (click to view full size)</small>
                                         </div>
                                     <?php endif; ?>
                                     <input type="file" class="form-control" id="thumbnail" name="thumbnail" 
@@ -163,6 +164,24 @@
     </section>
 </div>
 
+<!-- Theme Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-xl" style="min-width: 720px; max-width: 90vw;">
+        <div class="modal-content" style="height: 90vh;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalTitle">Theme Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0" style="height: calc(90vh - 120px); overflow-y: auto;">
+                <img id="previewImage" src="" alt="Theme Preview" class="w-100" style="object-fit: contain;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?= $this->endSection() ?>
 
 <?= $this->section("cssScript") ?>
@@ -237,19 +256,24 @@ document.addEventListener('DOMContentLoaded', function() {
     function submitForm() {
         const formData = new FormData(form);
         
+        // Add CSRF token
+        formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
+        formData.append('_method', 'PUT');
+        
         // Show loading state
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Saving...';
         
         fetch('<?= base_url("panel/template/{$theme->id}") ?>', {
             method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                'X-HTTP-Method-Override': 'PUT'
-            }
+            body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 showSuccess('Theme updated successfully!');
@@ -316,12 +340,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function activateTheme(id) {
     if (confirm('Are you sure you want to activate this theme?')) {
+        const formData = new FormData();
+        formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
+        
         fetch(`<?= base_url("panel/template/activate") ?>/${id}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
+            body: formData
         })
         .then(response => response.json())
         .then(data => {
@@ -337,6 +361,13 @@ function activateTheme(id) {
             alert('An error occurred while activating the theme.');
         });
     }
+}
+
+// Theme preview functionality
+function showThemePreview(imageUrl, themeName) {
+    document.getElementById('previewModalTitle').textContent = `Preview: ${themeName}`;
+    document.getElementById('previewImage').src = imageUrl;
+    new bootstrap.Modal(document.getElementById('previewModal')).show();
 }
 </script>
 <?= $this->endSection() ?>

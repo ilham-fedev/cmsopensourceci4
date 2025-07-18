@@ -31,8 +31,10 @@
                 <div class="card-body text-center">
                     <?php if ($theme->thumbnail): ?>
                         <img src="<?= base_url("themes/{$theme->folder}/{$theme->thumbnail}") ?>" 
-                             class="img-fluid rounded mb-3" style="max-height: 300px;" 
-                             alt="<?= esc($theme->judul) ?>">
+                             class="img-fluid rounded mb-3" style="max-height: 300px; cursor: pointer;" 
+                             alt="<?= esc($theme->judul) ?>"
+                             onclick="showThemePreview('<?= base_url("themes/{$theme->folder}/{$theme->thumbnail}") ?>', '<?= esc($theme->judul) ?>')">
+                        <p class="text-muted small">Click image to view full size</p>
                     <?php else: ?>
                         <div class="d-flex align-items-center justify-content-center bg-light rounded mb-3" 
                              style="height: 200px;">
@@ -61,9 +63,11 @@
                                 <i class="bi bi-check-circle"></i> Activate Theme
                             </button>
                         <?php endif; ?>
-                        <a href="<?= base_url("panel/template/preview/{$theme->id}") ?>" target="_blank" class="btn btn-info">
-                            <i class="bi bi-eye-fill"></i> Preview Theme
-                        </a>
+                        <?php if ($theme->thumbnail): ?>
+                            <button type="button" class="btn btn-info" onclick="showThemePreview('<?= base_url("themes/{$theme->folder}/{$theme->thumbnail}") ?>', '<?= esc($theme->judul) ?>')">
+                                <i class="bi bi-eye-fill"></i> Preview Theme
+                            </button>
+                        <?php endif; ?>
                         <a href="<?= base_url("panel/template/{$theme->id}/edit") ?>" class="btn btn-primary">
                             <i class="bi bi-pencil"></i> Edit Theme
                         </a>
@@ -267,6 +271,24 @@
     </div>
 </div>
 
+<!-- Theme Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-xl" style="min-width: 720px; max-width: 90vw;">
+        <div class="modal-content" style="height: 90vh;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalTitle">Theme Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0" style="height: calc(90vh - 120px); overflow-y: auto;">
+                <img id="previewImage" src="" alt="Theme Preview" class="w-100" style="object-fit: contain;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?= $this->endSection() ?>
 
 <?= $this->section("cssScript") ?>
@@ -302,12 +324,12 @@ let deleteThemeId = null;
 
 function activateTheme(id) {
     if (confirm('Are you sure you want to activate this theme?')) {
+        const formData = new FormData();
+        formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
+        
         fetch(`<?= base_url("panel/template/activate") ?>/${id}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
+            body: formData
         })
         .then(response => response.json())
         .then(data => {
@@ -333,12 +355,13 @@ function deleteTheme(id, name) {
 
 document.getElementById('confirmDelete').addEventListener('click', function() {
     if (deleteThemeId) {
+        const formData = new FormData();
+        formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
+        formData.append('_method', 'DELETE');
+        
         fetch(`<?= base_url("panel/template") ?>/${deleteThemeId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
+            method: 'POST',
+            body: formData
         })
         .then(response => response.json())
         .then(data => {
@@ -356,5 +379,12 @@ document.getElementById('confirmDelete').addEventListener('click', function() {
     }
     bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
 });
+
+// Theme preview functionality
+function showThemePreview(imageUrl, themeName) {
+    document.getElementById('previewModalTitle').textContent = `Preview: ${themeName}`;
+    document.getElementById('previewImage').src = imageUrl;
+    new bootstrap.Modal(document.getElementById('previewModal')).show();
+}
 </script>
 <?= $this->endSection() ?>

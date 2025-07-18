@@ -170,55 +170,82 @@ class Template extends BaseController
 	 */
 	public function update($id = null)
 	{
-		$theme = $this->model->find($id);
-		
-		if (!$theme) {
-			return $this->respond([
-				'success' => false,
-				'message' => 'Theme not found'
-			], 404);
-		}
-
-		$rules = [
-			'judul' => 'required|min_length[3]|max_length[100]',
-			'pembuat' => 'required|min_length[3]|max_length[100]',
-			'description' => 'permit_empty|max_length[500]',
-			'version' => 'permit_empty|max_length[20]'
-		];
-
-		if (!$this->validate($rules)) {
-			return $this->respond([
-				'success' => false,
-				'errors' => $this->validator->getErrors()
-			], 400);
-		}
-
-		$data = [
-			'judul' => $this->request->getPost('judul'),
-			'pembuat' => $this->request->getPost('pembuat'),
-			'description' => $this->request->getPost('description'),
-			'version' => $this->request->getPost('version') ?: '1.0.0'
-		];
-
-		// Handle thumbnail upload
-		$thumbnail = $this->request->getFile('thumbnail');
-		if ($thumbnail && $thumbnail->isValid()) {
-			$thumbnailResult = $this->handleThumbnailUpload($thumbnail, $theme->folder);
-			if ($thumbnailResult['success']) {
-				$data['thumbnail'] = $thumbnailResult['filename'];
+		try {
+			// Set response format to JSON
+			$this->response->setContentType('application/json');
+			
+			// Debug: Log the request to see if it's reaching here
+			log_message('info', 'Theme update request for ID: ' . $id);
+			log_message('info', 'POST data: ' . json_encode($this->request->getPost()));
+			
+			$theme = $this->model->find($id);
+			
+			if (!$theme) {
+				log_message('error', 'Theme not found with ID: ' . $id);
+				return $this->response->setJSON([
+					'success' => false,
+					'message' => 'Theme not found'
+				])->setStatusCode(404);
 			}
-		}
 
-		if ($this->model->update($id, $data)) {
-			return $this->respond([
-				'success' => true,
-				'message' => 'Theme updated successfully'
-			]);
-		} else {
-			return $this->respond([
+			$rules = [
+				'judul' => 'required|min_length[3]|max_length[100]',
+				'pembuat' => 'required|min_length[3]|max_length[100]',
+				'description' => 'permit_empty|max_length[500]',
+				'version' => 'permit_empty|max_length[20]'
+			];
+
+			if (!$this->validate($rules)) {
+				log_message('error', 'Validation failed: ' . json_encode($this->validator->getErrors()));
+				return $this->response->setJSON([
+					'success' => false,
+					'errors' => $this->validator->getErrors()
+				])->setStatusCode(400);
+			}
+
+			$data = [
+				'judul' => $this->request->getPost('judul'),
+				'pembuat' => $this->request->getPost('pembuat'),
+				'description' => $this->request->getPost('description'),
+				'version' => $this->request->getPost('version') ?: '1.0.0'
+			];
+
+			// Handle thumbnail upload
+			$thumbnail = $this->request->getFile('thumbnail');
+			if ($thumbnail && $thumbnail->isValid()) {
+				log_message('info', 'Processing thumbnail upload');
+				$thumbnailResult = $this->handleThumbnailUpload($thumbnail, $theme->folder);
+				if ($thumbnailResult['success']) {
+					$data['thumbnail'] = $thumbnailResult['filename'];
+					log_message('info', 'Thumbnail uploaded successfully: ' . $thumbnailResult['filename']);
+				} else {
+					log_message('error', 'Thumbnail upload failed: ' . $thumbnailResult['message']);
+				}
+			}
+
+			log_message('info', 'Updating theme with data: ' . json_encode($data));
+			
+			if ($this->model->update($id, $data)) {
+				log_message('info', 'Theme updated successfully');
+				return $this->response->setJSON([
+					'success' => true,
+					'message' => 'Theme updated successfully'
+				]);
+			} else {
+				log_message('error', 'Database update failed for theme ID: ' . $id);
+				return $this->response->setJSON([
+					'success' => false,
+					'message' => 'Failed to update theme'
+				])->setStatusCode(500);
+			}
+		} catch (\Exception $e) {
+			log_message('error', 'Exception in theme update: ' . $e->getMessage());
+			log_message('error', 'Stack trace: ' . $e->getTraceAsString());
+			
+			return $this->response->setJSON([
 				'success' => false,
-				'message' => 'Failed to update theme'
-			], 500);
+				'message' => 'An error occurred: ' . $e->getMessage()
+			])->setStatusCode(500);
 		}
 	}
 

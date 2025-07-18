@@ -145,8 +145,9 @@
                                             <div class="card-header p-0">
                                                 <?php if ($theme->thumbnail): ?>
                                                     <img src="<?= base_url("themes/{$theme->folder}/{$theme->thumbnail}") ?>" 
-                                                         class="card-img-top" style="height: 200px; object-fit: cover;" 
-                                                         alt="<?= esc($theme->judul) ?>">
+                                                         class="card-img-top theme-thumbnail" style="height: 200px; object-fit: cover; cursor: pointer;" 
+                                                         alt="<?= esc($theme->judul) ?>"
+                                                         onclick="showThemePreview('<?= base_url("themes/{$theme->folder}/{$theme->thumbnail}") ?>', '<?= esc($theme->judul) ?>')">
                                                 <?php else: ?>
                                                     <div class="d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
                                                         <i class="bi bi-image icon-xxxl text-muted"></i>
@@ -196,9 +197,11 @@
                                                                 <li><a class="dropdown-item" href="<?= base_url("panel/template/{$theme->id}/edit") ?>">
                                                                     <i class="bi bi-pencil"></i> Edit
                                                                 </a></li>
-                                                                <li><a class="dropdown-item" href="<?= base_url("panel/template/preview/{$theme->id}") ?>" target="_blank">
-                                                                    <i class="bi bi-eye-fill"></i> Preview
-                                                                </a></li>
+                                                                <?php if ($theme->thumbnail): ?>
+                                                                    <li><a class="dropdown-item" href="#" onclick="showThemePreview('<?= base_url("themes/{$theme->folder}/{$theme->thumbnail}") ?>', '<?= esc($theme->judul) ?>')">
+                                                                        <i class="bi bi-eye-fill"></i> Preview
+                                                                    </a></li>
+                                                                <?php endif; ?>
                                                                 <li><hr class="dropdown-divider"></li>
                                                                 <li><a class="dropdown-item" href="<?= base_url("panel/template/export/{$theme->id}") ?>">
                                                                     <i class="bi bi-download"></i> Export JSON
@@ -241,6 +244,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" id="confirmDelete">Delete Theme</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Theme Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-xl" style="min-width: 720px; max-width: 90vw;">
+        <div class="modal-content" style="height: 90vh;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalTitle">Theme Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0" style="height: calc(90vh - 120px); overflow-y: auto;">
+                <img id="previewImage" src="" alt="Theme Preview" class="w-100" style="object-fit: contain;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -393,6 +414,13 @@ function filterThemes(filter) {
             card.style.display = 'none';
         }
     });
+}
+
+// Theme preview functionality
+function showThemePreview(imageUrl, themeName) {
+    document.getElementById('previewModalTitle').textContent = `Preview: ${themeName}`;
+    document.getElementById('previewImage').src = imageUrl;
+    new bootstrap.Modal(document.getElementById('previewModal')).show();
 }
 
 // Search functionality
