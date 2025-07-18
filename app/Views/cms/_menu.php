@@ -51,6 +51,23 @@
                     </li>
                 </ul>
             </li>
+            <li class="sidebar-item  has-sub">
+                <a href="#" class='sidebar-link'>
+                    <i class="bi bi-palette"></i>
+                    <span>Templates</span>
+                </a>
+                <ul class="submenu ">
+                    <li class="submenu-item ">
+                        <a href="<?= base_url("panel/template") ?>">Manage Themes</a>
+                    </li>
+                    <li class="submenu-item ">
+                        <a href="<?= base_url("panel/template/new") ?>">Upload New</a>
+                    </li>
+                    <li class="submenu-item ">
+                        <a href="<?= base_url("panel/template/import") ?>">Import JSON</a>
+                    </li>
+                </ul>
+            </li>
             <?php endif ?>
             <li class="sidebar-title">Komponen</li>
             <li class="sidebar-item">

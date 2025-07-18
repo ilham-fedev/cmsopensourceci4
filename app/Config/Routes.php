@@ -103,6 +103,15 @@ $routes->group("panel", ["namespace" => "App\Controllers\Panel"] ,function($rout
 	$routes->resource('pinned');
 	/** Download */
 	$routes->resource('download');
+	/** Template */
+	$routes->resource('template', ['filter' => 'gate']);
+	/** Template Custom Routes */
+	$routes->post('template/activate/(:num)', 'Template::activate/$1', ['filter' => 'gate']);
+	$routes->get('template/export/(:num)', 'Template::export/$1', ['filter' => 'gate']);
+	$routes->get('template/import', 'Template::import', ['filter' => 'gate']);
+	$routes->post('template/doImport', 'Template::doImport', ['filter' => 'gate']);
+	$routes->get('template/preview/(:num)', 'Template::preview/$1', ['filter' => 'gate']);
+	$routes->get('template/search', 'Template::search', ['filter' => 'gate']);
 
 	/** Akun */
 	$routes->get('akun/edit', "Account::edit");
