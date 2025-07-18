@@ -41,11 +41,12 @@ $paths = new Config\Paths();
 // Ensure the current directory is pointing to the front controller's directory
 chdir(FCPATH);
 
-$bootstrap = rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'bootstrap.php';
-$app       = require realpath($bootstrap) ?: $bootstrap;
+// Load Composer autoloader
+require realpath(__DIR__ . '/vendor/autoload.php') ?: __DIR__ . '/vendor/autoload.php';
 
-// Grab our Console
-$console = new CodeIgniter\CLI\Console($app);
+// Use the new Boot class instead of deprecated bootstrap.php
+$exitCode = \CodeIgniter\Boot::bootSpark($paths);
+exit($exitCode);
 
 // We want errors to be shown when using it from the CLI.
 error_reporting(-1);

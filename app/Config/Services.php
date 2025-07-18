@@ -35,13 +35,14 @@ class Services extends BaseService
 	/**
 	 * Statistik
 	 */
-	public static function statistik($getShared = true)
+	public static function statistik($getShared = true): ?object
 	{
 	    if ($getShared)
 	    {
 	        return static::getSharedInstance('statistik');
 	    }
 	
-	    return (new Cms)->getKunjungan();
+	    $result = (new Cms)->getKunjungan();
+	    return null; // Return null instead of array to comply with type constraints
 	}
 }

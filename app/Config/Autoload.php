@@ -83,4 +83,18 @@ class Autoload extends AutoloadConfig
 	public $files = [
 		APPPATH . 'Helpers/cms_helper.php'
 	];
+
+	/**
+	 * -------------------------------------------------------------------
+	 * Helpers
+	 * -------------------------------------------------------------------
+	 * Prototype:
+	 *```
+	 *   $helpers = [
+	 *       'form',
+	 *   ];
+	 *```
+	 * @var array<int, string>
+	 */
+	public $helpers = [];
 }

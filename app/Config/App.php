@@ -23,7 +23,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $baseURL = 'http://localhost:8080/';
+	public $baseURL = 'http://localhost:8081/';
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -342,7 +342,7 @@ class App extends BaseConfig
 	 *
 	 * @var string|string[]
 	 */
-	public $proxyIPs = '';
+	public $proxyIPs = [];
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -462,4 +462,16 @@ class App extends BaseConfig
 	 * @var boolean
 	 */
 	public $CSPEnabled = false;
+
+	/**
+	 * --------------------------------------------------------------------------
+	 * Allowed Hostnames
+	 * --------------------------------------------------------------------------
+	 *
+	 * An array of hostnames that are allowed to use this application.
+	 * If empty, all hostnames are allowed.
+	 *
+	 * @var array<string>
+	 */
+	public array $allowedHostnames = [];
 }

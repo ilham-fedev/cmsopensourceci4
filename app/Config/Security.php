@@ -8,6 +8,17 @@ class Security extends BaseConfig
 {
 	/**
 	 * --------------------------------------------------------------------------
+	 * CSRF Protection
+	 * --------------------------------------------------------------------------
+	 *
+	 * Enable/disable CSRF protection.
+	 *
+	 * @var boolean
+	 */
+	public $csrfProtection = false;
+
+	/**
+	 * --------------------------------------------------------------------------
 	 * CSRF Token Name
 	 * --------------------------------------------------------------------------
 	 *
@@ -92,4 +103,15 @@ class Security extends BaseConfig
 	 * @deprecated
 	 */
 	public $samesite = 'Lax';
+
+	/**
+	 * --------------------------------------------------------------------------
+	 * CSRF Token Randomize
+	 * --------------------------------------------------------------------------
+	 *
+	 * Randomize CSRF token for increased security.
+	 *
+	 * @var boolean
+	 */
+	public $tokenRandomize = false;
 }

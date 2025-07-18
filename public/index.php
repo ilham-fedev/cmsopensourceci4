@@ -22,15 +22,9 @@ require realpath(FCPATH . '../app/Config/Paths.php') ?: FCPATH . '../app/Config/
 
 $paths = new Config\Paths();
 
-// Location of the framework bootstrap file.
-$bootstrap = rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'bootstrap.php';
-$app       = require realpath($bootstrap) ?: $bootstrap;
+// Load Composer autoloader
+require realpath(FCPATH . '../vendor/autoload.php') ?: FCPATH . '../vendor/autoload.php';
 
-/*
- *---------------------------------------------------------------
- * LAUNCH THE APPLICATION
- *---------------------------------------------------------------
- * Now that everything is setup, it's time to actually fire
- * up the engines and make this app do its thang.
- */
-$app->run();
+// Use the new Boot class instead of deprecated bootstrap.php
+$exitCode = \CodeIgniter\Boot::bootWeb($paths);
+exit($exitCode);

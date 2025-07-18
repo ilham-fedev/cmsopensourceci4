@@ -57,4 +57,24 @@ class Exceptions extends BaseConfig
 	 * @var array
 	 */
 	public $sensitiveDataInTrace = [];
+
+	/**
+	 * --------------------------------------------------------------------------
+	 * LOG DEPRECATIONS?
+	 * --------------------------------------------------------------------------
+	 * If true, then deprecation warnings will be logged
+	 *
+	 * @var boolean
+	 */
+	public $logDeprecations = true;
+
+	/**
+	 * --------------------------------------------------------------------------
+	 * DEPRECATION LOG LEVEL
+	 * --------------------------------------------------------------------------
+	 * The log level for deprecation warnings
+	 *
+	 * @var string
+	 */
+	public $deprecationLogLevel = 'warning';
 }

@@ -114,11 +114,11 @@
                         <div class="col-lg-4 col-md-6 col-12">
                             <!-- Single Widget -->
                             <div class="single-footer newsletter">
-                            <?php $statistik = service('statistik');?>
+                            <?php $statistik = (new \App\Models\Cms)->getKunjungan();?>
                                 <h3>Kunjungan</h3>
-                                <div><i class="lni lni-pulse"></i> <small>Total Kunjungan</small> : <b><?= $statistik['days'] ?></b></div>
-                                <div><i class="lni lni-target-customer"></i> <small>Bulan Ini</small> : <b><?= $statistik['month'] ?></b></div>
-                                <div><i class="lni lni-users"></i> <small>Hari Ini</small> : <b><?= $statistik['all'] ?></b></div>
+                                <div><i class="lni lni-pulse"></i> <small>Total Kunjungan</small> : <b><?= $statistik['days'] ?? '0' ?></b></div>
+                                <div><i class="lni lni-target-customer"></i> <small>Bulan Ini</small> : <b><?= $statistik['month'] ?? '0' ?></b></div>
+                                <div><i class="lni lni-users"></i> <small>Hari Ini</small> : <b><?= $statistik['all'] ?? '0' ?></b></div>
                                 <br />
                                 <br />
                             </div>

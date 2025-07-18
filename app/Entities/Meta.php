@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use CodeIgniter\Entity\Entity;
+use CodeIgniter\DataCaster\DataCaster;
 
 class Meta extends Entity
 {
@@ -24,6 +25,7 @@ class Meta extends Entity
 	 */
 	function __construct($cms = null)
 	{
+		parent::__construct();
 		$this->cms = $cms;
 	}
 
