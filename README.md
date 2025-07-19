@@ -27,7 +27,7 @@ This repository includes several critical upgrades and fixes for CodeIgniter 4.6
 ### Bug Fixes
 - ✅ **Entity Constructor**: Fixed Entity initialization issues
 - ✅ **URL Routing**: Resolved `/page/` and `/kategori/` route conflicts
-- ✅ **Port Configuration**: Changed from port 8080 to 8081 to avoid conflicts
+- ✅ **Port Configuration**: Using port 8080 (default CodeIgniter port)
 - ✅ **Environment Setup**: Proper ENVIRONMENT constant handling
 - ✅ **Database Connectivity**: Enhanced database configuration
 
@@ -75,19 +75,19 @@ cp env .env
 
 Update the base URL in `.env`:
 ```env
-app.baseURL = 'http://localhost:8081'
+app.baseURL = 'http://localhost:8080'
 ```
 
 ### 5. Run the Application
 ```bash
-php spark serve --port=8081
+php spark serve
 ```
 
-Visit: `http://localhost:8081`
+Visit: `http://localhost:8080`
 
 ## 🔐 Admin Access
 
-- **Admin URL**: `http://localhost:8081/cms-login`
+- **Admin URL**: `http://localhost:8080/cms-login`
 - **Username**: `@cmsopensurce`
 - **Password**: `cmsopensurce`
 
@@ -122,8 +122,8 @@ themes/              # Frontend themes
 - Fixed Entity constructors and data casting
 
 ### Testing URLs
-- Home: `http://localhost:8081/`
-- Admin: `http://localhost:8081/cms-login`
+- Home: `http://localhost:8080/`
+- Admin: `http://localhost:8080/cms-login`
 
 ### Admin Login Credentials
 - **Username**: `@cmsopensurce`
